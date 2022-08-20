@@ -10,10 +10,14 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 
 def do_query(params):
     with open(os.path.join(DATA_DIR, params["file_name"])) as f:
-        file_data = f.read().split('\n')
+        file_data = f.readlines()
 
     if params['cmd1'] == 'filter':
         result = filter(lambda record: params['value1'] in record, file_data)
+    elif params['cmd1'] == 'map':
+        col_num = int(params['value1'])
+        result = map(lambda record: record.split()[col_num], file_data)
+
     return list(result)
 
 
@@ -29,7 +33,7 @@ def perform_query():
     if not os.path.exists(os.path.join(DATA_DIR, file_name)):
         raise BadRequest
 
-    return jsonify(do_query(data))
+    return do_query(data)
 
 
 if __name__ == '__main__':
