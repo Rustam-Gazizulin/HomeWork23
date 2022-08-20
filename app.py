@@ -20,6 +20,8 @@ def do_cmd(cmd, value, data):
     elif cmd == 'sort':
         reverse = (value == 'desc')
         result = sorted(data, reverse=reverse)
+    elif cmd == 'limit':
+        result = data[:int(value)]
     else:
         raise BadRequest
     return result
